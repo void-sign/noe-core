@@ -14,19 +14,55 @@ Noe-core is the reference implementation for the Noesis Object Encoding (.noe) f
 - **Quantum circuit embedding**: Direct expression of quantum operations
 - **Human-readability first, machine-parseable second**
 
-## Grammar
+## Grammar (Simplified BNF-like)
 
-### Field Declaration
+```
+program        ::= { field_block }
+field_block    ::= "field" identifier "{" { definition | quantum_block } "}"
+definition     ::= "define" identifier ":" type_expr [ assignment ]
+type_expr      ::= "@" identifier [ "(" literal ")" ] [ block ]
+assignment     ::= identifier "=" value
+block          ::= "{" { assignment } "}"
+quantum_block  ::= "quantum_circuit" identifier "{" circuit_body "}"
+circuit_body   ::= "qbits:" array "apply:" { gate_expr }
+gate_expr      ::= identifier "->" identifier [ "->" identifier ]
+array          ::= "[" [ value { "," value } ] "]"
+value          ::= literal | identifier | array
+identifier     ::= NAME | NAME "." NAME | NAME "_" NAME
+literal        ::= string | number
+```
+
+### Examole of .noe (Full)
 ```noe
-field <FieldName> {
-  define <ElementName>: <Value>
-  quantum_circuit <CircuitName> { ... }
+// declare a quantum field
+field QuantumMind {
+  define emotion:
+    @superposition {
+      joy = 0.6
+      fear = 0.4
+    }
+    entangled_with = [intent.explore, memory.snapshot.001]
+
+  define intent:
+    @dynamic("seek_knowledge")
+    triggers = [emotion, environment]
+
+  define memory.snapshot.001:
+    @fixed("2025-04-01T10:44Z")
+
+  quantum_circuit QC_01 {
+    qbits: [q0, q1, q2]
+    apply:
+      H -> q0
+      CX -> (q0, q1)
+      M -> q1 -> result.output
+  }
 }
 ```
 
-### Define Statement
+### Examole of .min.noe (Minified)
 ```noe
-define name: value
+field QuantumMind{define emotion:@superposition{joy=0.6 fear=0.4} entangled_with=[intent.explore,memory.snapshot.001] define intent:@dynamic("seek_knowledge") triggers=[emotion,environment] define memory.snapshot.001:@fixed("2025-04-01T10:44Z") quantum_circuit QC_01{qbits:[q0,q1,q2] apply:H->q0 CX->(q0,q1) M->q1->result.output}}
 ```
 
 ### Supported Value Types
@@ -51,14 +87,6 @@ quantum_circuit QC_01 {
 - `@` : Directive for processing state (e.g., superposition, dynamic)
 - `=` : Value assignment
 - `->` : Flow or quantum gate application
-
-## Minified Format (.min.noe)
-- No line breaks or indentation
-- Retains logical structure
-- Example:
-```
-field QuantumMind{define emotion:@superposition{joy=0.6 fear=0.4} entangled_with=[intent.explore,memory.snapshot.001] define intent:@dynamic("seek_knowledge") triggers=[emotion,environment] define memory.snapshot.001:@fixed("2025-04-01T10:44Z") quantum_circuit QC_01{qbits:[q0,q1,q2] apply:H->q0 CX->(q0,q1) M->q1->result.output}}
-```
 
 ## Notes
 - Indentation is optional but recommended for readability
