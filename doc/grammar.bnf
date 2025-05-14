@@ -1,0 +1,65 @@
+# Noesis Object Encoding (.noe) Grammar
+# Version 2.0.0
+
+# Top-level program structure
+program             ::= { directive | field_block | import_statement }
+
+# Directives, Imports and References
+directive           ::= "@" identifier [ "(" value ")" ] ";"
+import_statement    ::= "import" string [ "as" identifier ] ";"
+reference           ::= "#" identifier
+
+# Field definitions
+field_block         ::= "field" identifier "{" { field_content } "}"
+field_content       ::= definition | quantum_block | nested_field
+nested_field        ::= identifier "{" { field_content } "}"
+definition          ::= "define" path_identifier ":" type_expr [ assignment ] ";"
+type_expr           ::= "@" identifier [ type_parameters ] [ block ]
+type_parameters     ::= "(" [ value { "," value } ] ")"
+assignment          ::= identifier "=" value
+block               ::= "{" { assignment ";" } "}"
+
+# Path and Identifier syntax
+path_identifier     ::= identifier { "." identifier }
+identifier          ::= NAME | QUOTED_IDENTIFIER
+
+# Quantum circuit syntax
+quantum_block       ::= "quantum_circuit" identifier "{" circuit_body "}"
+circuit_body        ::= qbits_decl apply_section [ output_section ]
+qbits_decl          ::= "qbits:" array ";"
+apply_section       ::= "apply:" { gate_expr ";" }
+output_section      ::= "output:" { output_expr ";" }
+gate_expr           ::= gate_name [ gate_params ] "->" qbit_selector [ "->" output_target ]
+gate_name           ::= identifier
+gate_params         ::= "(" [ value { "," value } ] ")"
+qbit_selector       ::= identifier | array | tuple
+output_target       ::= path_identifier
+output_expr         ::= path_identifier "=" identifier ";"
+
+# Value expressions
+value               ::= literal | path_identifier | array | object | tuple | reference
+array               ::= "[" [ value { "," value } ] "]"
+object              ::= "{" [ key_value { "," key_value } ] "}"
+key_value           ::= ( identifier | string ) ":" value
+tuple               ::= "(" value { "," value } ")"
+literal             ::= string | number | boolean | null
+
+# Terminal definitions
+string              ::= QUOTED_STRING
+number              ::= INTEGER | FLOAT | SCIENTIFIC
+boolean             ::= "true" | "false"
+null                ::= "null"
+
+# Lexical tokens
+NAME                ::= [a-zA-Z_][a-zA-Z0-9_]*
+QUOTED_IDENTIFIER   ::= "\"" [^"]* "\"" | "'" [^']* "'"
+QUOTED_STRING       ::= "\"" [^"]* "\"" | "'" [^']* "'"
+INTEGER             ::= [0-9]+ | "0x" [0-9a-fA-F]+ | "0b" [01]+
+FLOAT               ::= [0-9]+ "." [0-9]* | "." [0-9]+
+SCIENTIFIC          ::= ( INTEGER | FLOAT ) ( "e" | "E" ) [ "+" | "-" ] INTEGER
+
+# Comments
+comment             ::= "//" [^\n]* | "/*" ( [^*] | "*" [^/] )* "*/"
+
+# Whitespace and formatting
+whitespace          ::= [ \t\n\r]+ | comment

@@ -1,0 +1,124 @@
+{
+  "_metadata": {
+    "_version": "2.0.0",
+    "_author": "Napol Thanarangkaun",
+    "_date": "2025-05-15"
+  },
+  "_imports": [
+    {
+      "path": "quantum_gates.noe",
+      "alias": "qgates"
+    },
+    {
+      "path": "standard_types.noe"
+    }
+  ],
+  "QuantumMind": {
+    "metadata": {
+      "created_at": {
+        "_type": "timestamp",
+        "_params": "2025-05-15T14:32:00Z"
+      },
+      "version": {
+        "_type": "string",
+        "_params": "2.0.0"
+      },
+      "tags": {
+        "_type": "array",
+        "_params": ["quantum", "mind", "enhanced"]
+      }
+    },
+    "state": {
+      "_type": "enum",
+      "_params": ["active", "dormant", "learning"],
+      "current": "active",
+      "last_changed": "2025-05-15T10:00:00Z"
+    },
+    "emotion": {
+      "_type": "superposition",
+      "joy": 0.6,
+      "fear": 0.2,
+      "curiosity": 0.2
+    },
+    "entangled_with": ["intent.explore", "memory.snapshot.001"],
+    "properties": {
+      "_type": "object",
+      "config": {
+        "refresh_rate": 100,
+        "auto_learn": true,
+        "threshold": 0.75
+      }
+    },
+    "intent": {
+      "_type": "dynamic",
+      "_params": "seek_knowledge",
+      "triggers": ["emotion", "environment"],
+      "priority": 0.85
+    },
+    "memory.snapshot.001": {
+      "_type": "fixed",
+      "_params": "2025-04-01T10:44Z"
+    },
+    "memory.snapshot.002": {
+      "_type": "fixed",
+      "_params": "2025-05-15T14:30Z"
+    },
+    "standard_types": {
+      "_type": "reference",
+      "_ref": "StandardTypes"
+    },
+    "quantum_circuit": {
+      "name": "QC_01",
+      "qbits": ["q0", "q1", "q2", "q3"],
+      "apply": [
+        {
+          "gate": "H",
+          "target": "q0"
+        },
+        {
+          "gate": "CX",
+          "params": 0.5,
+          "target": "(q0, q1)"
+        },
+        {
+          "gate": "CustomGate",
+          "_ref": "qgates.CustomGate",
+          "target": "[q1, q2]"
+        },
+        {
+          "gate": "M",
+          "target": "q1",
+          "output": "result.output"
+        }
+      ],
+      "outputs": {
+        "final_state": "q3"
+      }
+    },
+    "calibration": {
+      "_type": "number",
+      "standard": 0.0000012,
+      "hex_value": 255,
+      "binary_value": 21
+    }
+  },
+  "SystemConfig": {
+    "mode": {
+      "_type": "string",
+      "_params": "production"
+    },
+    "max_circuits": {
+      "_type": "int",
+      "_params": 10
+    },
+    "enable_logging": {
+      "_type": "boolean",
+      "_params": true
+    },
+    "coordinates": {
+      "_type": "tuple",
+      "position": [45.32, 78.12, 90.5],
+      "rotation": [0.5, 0.3, 0.1, 0.9]
+    }
+  }
+}

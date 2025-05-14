@@ -19,6 +19,11 @@ echo "-----------------------------"
 ./noe_lint.fish --verbose sample.noe
 echo ""
 
+echo "Example 2: Validating against formal BNF grammar"
+echo "--------------------------------------------"
+./noe_parser.fish --grammar sample.noe
+echo ""
+
 echo "Example 2: Converting .noe to JSON"
 echo "--------------------------------"
 ./noe_parser.fish --json sample.noe > sample.json
