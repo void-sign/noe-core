@@ -13,7 +13,7 @@ Noesis Object Encoding follows semantic versioning (MAJOR.MINOR.PATCH):
 
 For the complete changelog, see the `doc/changelog` directory.
 
-> 🆕 **NEW**: Version 2.0.0 introduces significant grammar enhancements for improved standardization and flexibility. See [grammar_enhancements.md](/doc/grammar_enhancements.md) for details.
+**NEW**: Version 2.0.0 introduces significant grammar enhancements for improved standardization and flexibility. See [grammar_enhancements.md](/doc/grammar_enhancements.md) for details.
 
 ## File Extensions
 - `.noe` : Full, human-readable format
