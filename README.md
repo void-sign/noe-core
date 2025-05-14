@@ -93,6 +93,41 @@ quantum_circuit QC_01 {
 - Comments and versioning features are future extensions
 - `.noe` is a foundational format in the Noesis ecosystem for modeling self-aware agents and modular quantum-synthetic systems
 
+## Tools
+
+### noe_parser.fish
+A prototype parser for Noesis Object Encoding (.noe) files that can:
+- Lint .noe files for syntax errors
+- Convert .noe files to JSON format
+- Convert .noe files to YAML format
+
+Usage:
+```
+./noe_parser.fish [options] <file.noe>
+
+Options:
+  --json        Convert .noe to JSON format
+  --yaml        Convert .noe to YAML format
+  --lint        Lint .noe file for syntax errors
+  --help, -h    Show this help message
+```
+
+### noe_lint.fish
+A specialized linter for Noesis Object Encoding (.noe) files with enhanced validation.
+
+Usage:
+```
+./noe_lint.fish [options] <file.noe>
+
+Options:
+  --verbose     Show detailed information about each check
+  --fix         Attempt to fix minor issues (whitespace, indentation)
+  --help, -h    Show this help message
+```
+
+### examples.fish
+Demonstrates the usage of the parser and linter tools with sample files.
+
 ## License
 This project is licensed under the Noesis License - see the [LICENSE](LICENSE) file for details.
 
