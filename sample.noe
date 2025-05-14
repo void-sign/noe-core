@@ -1,4 +1,8 @@
+// Copyright (c) 2025 Napol Thanarangkaun (napol@noesis.run). All rights reserved.
+// Licensed under the Noesis License.
+
 // declare a quantum field
+
 field QuantumMind {
   define emotion:
     @superposition {
