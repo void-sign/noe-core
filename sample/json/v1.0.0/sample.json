@@ -1,0 +1,22 @@
+{
+  "QuantumMind": {
+    "emotion": {
+      "type": "superposition",
+      "joy": 0.6,
+      "fear": 0.4
+    },
+    "entangled_with": ["intent.explore", "memory.snapshot.001"],
+    "intent": {
+      "type": "dynamic", 
+      "value": "seek_knowledge",
+      "triggers": ["emotion", "environment"]
+    },
+    "memory.snapshot.001": {
+      "type": "fixed", 
+      "timestamp": "2025-04-01T10:44Z"
+    },
+    "quantum_circuit": {
+      "name": "QC_01"
+    }
+  }
+}

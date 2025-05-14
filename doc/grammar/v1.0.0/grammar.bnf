@@ -1,0 +1,13 @@
+program        ::= { field_block }
+field_block    ::= "field" identifier "{" { definition | quantum_block } "}"
+definition     ::= "define" identifier ":" type_expr [ assignment ]
+type_expr      ::= "@" identifier [ "(" literal ")" ] [ block ]
+assignment     ::= identifier "=" value
+block          ::= "{" { assignment } "}"
+quantum_block  ::= "quantum_circuit" identifier "{" circuit_body "}"
+circuit_body   ::= "qbits:" array "apply:" { gate_expr }
+gate_expr      ::= identifier "->" identifier [ "->" identifier ]
+array          ::= "[" [ value { "," value } ] "]"
+value          ::= literal | identifier | array
+identifier     ::= NAME | NAME "." NAME | NAME "_" NAME
+literal        ::= string | number
