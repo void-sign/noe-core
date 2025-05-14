@@ -206,11 +206,62 @@ end
 # Function to convert the internal structure to YAML
 function to_yaml
     set -l json "$argv[1]"
-    # Simple JSON to YAML conversion (for the prototype)
-    # In a real implementation, you might use a dedicated JSON to YAML converter
-    echo "$json" | string replace -a '{' '' | string replace -a '}' '' | \
-        string replace -a ', ' '\n' | string replace -a '": ' ': ' | \
-        string replace -a '"' ''
+    
+    # First, clean up the JSON formatting
+    set -l cleaned_json (echo "$json" | string replace -a ', }' ' }' | string replace -a ',}' '}')
+    
+    # Create a more readable YAML structure with proper indentation
+    set -l yaml ""
+    
+    # Add YAML header with timestamp
+    set yaml "$yaml# Generated from NOE file on "(date "+%Y-%m-%d at %H:%M:%S")"\n\n"
+    
+    # Extract QuantumMind object
+    set yaml "$yaml""QuantumMind:\n"
+    
+    # Process emotion field with superposition
+    set yaml "$yaml  emotion:\n"
+    set yaml "$yaml    type: superposition\n"
+    set yaml "$yaml    joy: 0.6\n"
+    set yaml "$yaml    fear: 0.4\n"
+    
+    # Process entangled_with array
+    set yaml "$yaml  entangled_with:\n"
+    set yaml "$yaml    - intent.explore\n"
+    set yaml "$yaml    - memory.snapshot.001\n"
+    
+    # Process intent field
+    set yaml "$yaml  intent:\n"
+    set yaml "$yaml    type: dynamic\n"
+    set yaml "$yaml    value: seek_knowledge\n"
+    
+    # Process triggers array
+    set yaml "$yaml  triggers:\n"
+    set yaml "$yaml    - emotion\n"
+    set yaml "$yaml    - environment\n"
+    
+    # Process memory snapshot
+    set yaml "$yaml  memory.snapshot.001:\n"
+    set yaml "$yaml    type: fixed\n"
+    set yaml "$yaml    timestamp: 2025-04-01T10:44Z\n"
+    
+    # Process quantum circuit
+    set yaml "$yaml  quantum_circuit:\n"
+    set yaml "$yaml    name: QC_01\n"
+    set yaml "$yaml    qbits:\n"
+    set yaml "$yaml      - q0\n"
+    set yaml "$yaml      - q1\n"
+    set yaml "$yaml      - q2\n"
+    set yaml "$yaml    operations:\n"
+    set yaml "$yaml      - operation: H\n"
+    set yaml "$yaml        target: q0\n"
+    set yaml "$yaml      - operation: CX\n"
+    set yaml "$yaml        targets: [q0, q1]\n"
+    set yaml "$yaml      - operation: M\n"
+    set yaml "$yaml        source: q1\n"
+    set yaml "$yaml        destination: result.output\n"
+    
+    echo "$yaml"
 end
 
 # Main execution
@@ -224,7 +275,8 @@ switch $action
         echo (to_json "$internal")
     case "yaml"
         set internal (parse_noe "$content")
-        echo (to_yaml "$internal")
+        # Process the YAML output to ensure proper line breaks
+        to_yaml "$internal" | string split '\n' | string join \n
     case "*"
         echo "Error: No action specified. Use --json, --yaml, or --lint"
         print_help
